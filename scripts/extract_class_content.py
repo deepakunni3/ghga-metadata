@@ -93,7 +93,12 @@ def delete_identifier(class_def: dict, identifier: str = "alias") -> dict:
 def replace_schema_refs(schema_defs: dict) -> dict:
     """Recursively replaces '#/$defs/' references with the specified schemas path."""
     for key, value in schema_defs.items():
-        if key == "$ref":
+        if key == "$ref" and "Enum" in value:
+            schema_defs[key] = value.replace(
+                "#/$defs",
+                str(os.path.relpath(ENUM_CLASS_CONTENT_DIR, ROOT)),
+            )
+        elif key == "$ref":
             schema_defs[key] = value.replace(
                 "#/$defs",
                 str(os.path.relpath(CLASS_CONTENT_DIR, ROOT)),

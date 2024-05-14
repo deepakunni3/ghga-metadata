@@ -14,7 +14,7 @@
             "type": "string"
         },
         "karyotype": {
-            "$ref": "src/content_schemas/KaryotypeEnum",
+            "$ref": "src/content_schemas/enums/KaryotypeEnum",
             "description": "The karyotype of the Individual."
         },
         "phenotypic_features": {
@@ -25,7 +25,7 @@
             "type": "array"
         },
         "sex": {
-            "$ref": "src/content_schemas/IndividualSexEnum",
+            "$ref": "src/content_schemas/enums/IndividualSexEnum",
             "description": "The genotypic sex of the Individual (e.g., female)."
         }
     },

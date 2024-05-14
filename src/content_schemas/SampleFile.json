@@ -11,11 +11,11 @@
             "type": "string"
         },
         "format": {
-            "$ref": "src/content_schemas/FileFormatEnum",
+            "$ref": "src/content_schemas/enums/FileFormatEnum",
             "description": "The format of the File (e.g., BAM, SAM, CRAM, BAI)."
         },
         "forward_or_reverse": {
-            "$ref": "src/content_schemas/ForwardOrReverseEnum",
+            "$ref": "src/content_schemas/enums/ForwardOrReverseEnum",
             "description": "Denotes whether a submitted FASTQ file contains forward (R1) or reverse (R2) reads for paired-end sequencing."
         },
         "name": {

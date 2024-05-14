@@ -22,11 +22,11 @@
             "type": "string"
         },
         "storage": {
-            "$ref": "src/content_schemas/StorageEnum",
+            "$ref": "src/content_schemas/enums/StorageEnum",
             "description": "Methods by which this Sample is stored."
         },
         "type": {
-            "$ref": "src/content_schemas/SampleTypeEnum",
+            "$ref": "src/content_schemas/enums/SampleTypeEnum",
             "description": "The type of the Sample."
         },
         "xref": {
