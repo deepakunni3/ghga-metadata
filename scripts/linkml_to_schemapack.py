@@ -2,9 +2,9 @@
 """Script to convert linkML schema to schemapack definition"""
 
 from pathlib import Path
-
+from typing import Any
+import json
 import yaml
-from schemapack._internals.dump import dump_schemapack
 from schemapack.spec.schemapack import (
     ClassDefinition,
     ContentSchema,
@@ -17,11 +17,13 @@ from schemapack.spec.schemapack import (
 from script_utils.cli import run
 
 HERE = Path(__file__).parent.resolve()
-SCHEMA_FOLDER = HERE.parent / "src" / "schema" / "ghga_metadata_schema.schemapack.yaml"
-LINKML_SCHEMA = HERE.parent / "src" / "schema" / "submission.yaml"
-RELATIONS_CONFIG = HERE.parent / "relations_config.yaml"
-CLASS_CONTENT_FOLDER = HERE.parent / "src" / "content_schemas"
-EXCLUDED_CLASSES = HERE.parent / "exclude_config.yaml"
+ROOT = HERE.parent
+SRC_DIR = ROOT / "src"
+SCHEMA_FOLDER = SRC_DIR / "ghga_metadata_schema.schemapack.yaml"
+LINKML_SCHEMA = SRC_DIR / "schema" / "submission.yaml"
+RELATIONS_CONFIG = ROOT / "relations_config.yaml"
+CLASS_CONTENT_FOLDER = SRC_DIR / "content_schemas"
+EXCLUDED_CLASSES = ROOT / "exclude_config.yaml"
 
 SCHEMAPACK_SCHEMA_DESCRIPTION = (
     "Metadata schema for the German Human Genome-Phenome Archive (GHGA)"
@@ -123,8 +125,52 @@ def construct_schemapack(
         schemapack="0.3.0",
         description=schemapack_schema_description,
         classes=schemapack_class_definitions,
-        rootClass=None
+        rootClass=None,
     )
+
+
+def get_content_schema_path(class_name: str, content_schema_dir: Path, src_dir: Path = SRC_DIR 
+) -> Path:
+    """Get the path to a content schema file in the provided directory for a class with
+    the provided name. It is relative to the root directory.
+    """
+    return  content_schema_dir.relative_to(SRC_DIR) / f"{class_name}.json"
+
+
+def set_content_schema_paths(
+    schemapack_dict: dict[str, Any], content_schema_dir: Path = CLASS_CONTENT_FOLDER
+) -> dict[str, Any]:
+    """Sets the content schema paths in the provided schemapack dictionary."""
+    modified_classes = {
+        class_name: {
+            **class_,
+            "content": str(
+                get_content_schema_path(
+                    class_name, content_schema_dir
+                )
+            ),
+        }
+        for class_name, class_ in schemapack_dict["classes"].items()
+    }
+
+    return {**schemapack_dict, "classes": modified_classes}
+
+
+def dump_schemapack(schemapack: SchemaPack, *, path: Path):
+    """Dumps the contents of a SchemaPack object to a YAML file at the specified path.
+    It produces a non-condensed schemapack definition, where the value of the class
+    contents are set to the relative paths of their corresponding json schema file."""
+
+    parent_dir = path.parent
+    if not parent_dir.exists():
+        raise FileNotFoundError(f"The parent directory of '{path}' does not exist.")
+
+    schemapack_dict = json.loads(schemapack.model_dump_json(exclude_defaults=True))
+    modified_schemapack_dict = set_content_schema_paths(
+        schemapack_dict,
+    )
+    with open(path, "w", encoding="utf-8") as file:
+        yaml.dump(modified_schemapack_dict, file)
 
 
 def main():
@@ -135,10 +181,7 @@ def main():
     schemapack = construct_schemapack(
         _class_definitions(linkml_overall_schema, relations, excluded)
     )
-
-    dump_schemapack(
-        schemapack, path=SCHEMA_FOLDER, content_schema_dir=CLASS_CONTENT_FOLDER, condensed=False
-    )
+    dump_schemapack(schemapack, path=SCHEMA_FOLDER)
 
 
 if __name__ == "__main__":
