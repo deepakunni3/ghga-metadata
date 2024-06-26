@@ -1,12 +1,12 @@
 classes:
   Analysis:
-    content: content_schemas/Analysis.json
+    content: src/content_schemas/Analysis.json
     description: An Analysis is a data transformation that transforms input data to
       output data.
     id:
       propertyName: alias
   AnalysisProcess:
-    content: content_schemas/AnalysisProcess.json
+    content: src/content_schemas/AnalysisProcess.json
     description: An Analysis Process captures the workflow steps that were performed
       to analyze data obtained from a Sequencing Experiment.
     id:
@@ -45,7 +45,7 @@ classes:
           target: true
         targetClass: StudyFile
   AnalysisProcessOutputFile:
-    content: content_schemas/AnalysisProcessOutputFile.json
+    content: src/content_schemas/AnalysisProcessOutputFile.json
     description: A Analysis Process OutputFile is a File that is associated as an
       output file with an Analysis Process.
     id:
@@ -68,7 +68,7 @@ classes:
           target: false
         targetClass: Dataset
   Biospecimen:
-    content: content_schemas/Biospecimen.json
+    content: src/content_schemas/Biospecimen.json
     description: A Biospecimen is any natural material taken from a biological entity
       for testing, diagnostics, treatment, or research purposes.  It is linked to
       the Individual from which the Biospecimen is derived.
@@ -84,7 +84,7 @@ classes:
           target: false
         targetClass: Individual
   Condition:
-    content: content_schemas/Condition.json
+    content: src/content_schemas/Condition.json
     description: A Condition specifies which special characteristics and treatments
       apply to a Sample (e.g., whether the Sample comes from a disease or a healthy
       tissue).
@@ -100,14 +100,14 @@ classes:
           target: false
         targetClass: Study
   DataAccessCommittee:
-    content: content_schemas/DataAccessCommittee.json
+    content: src/content_schemas/DataAccessCommittee.json
     description: A group of members that are delegated to grant access to one or more
       datasets after ensuring the criteria for data sharing has been met,  and request
       for data use does not raise ethical and/or legal concerns.
     id:
       propertyName: alias
   DataAccessPolicy:
-    content: content_schemas/DataAccessPolicy.json
+    content: src/content_schemas/DataAccessPolicy.json
     description: A Data Access Policy specifies under which circumstances, legal or
       otherwise, a user can have access to one or more Datasets belonging to one or
       more Studies.
@@ -123,7 +123,7 @@ classes:
           target: false
         targetClass: DataAccessCommittee
   Dataset:
-    content: content_schemas/Dataset.json
+    content: src/content_schemas/Dataset.json
     description: A Dataset is a collection of Files that is prepared for distribution
       and is tied to a Data Access Policy.
     id:
@@ -138,18 +138,18 @@ classes:
           target: false
         targetClass: DataAccessPolicy
   Individual:
-    content: content_schemas/Individual.json
+    content: src/content_schemas/Individual.json
     description: An Individual is a Person who is participating in a Study.
     id:
       propertyName: alias
   LibraryPreparationProtocol:
-    content: content_schemas/LibraryPreparationProtocol.json
+    content: src/content_schemas/LibraryPreparationProtocol.json
     description: The Library Preparation Protocol captures information about the library
       preparation of a Sequencing Experiment.
     id:
       propertyName: alias
   Publication:
-    content: content_schemas/Publication.json
+    content: src/content_schemas/Publication.json
     description: A Publication represents an article that is published. The minimum
       expectation is that the publication has a valid DOI.
     id:
@@ -164,7 +164,7 @@ classes:
           target: false
         targetClass: Study
   Sample:
-    content: content_schemas/Sample.json
+    content: src/content_schemas/Sample.json
     description: A Sample is a limited quantity of something to be used for testing,
       analysis, inspection, investigation, demonstration, or trial use.  It is prepared
       from a Biospecimen.
@@ -188,7 +188,7 @@ classes:
           target: false
         targetClass: Condition
   SampleFile:
-    content: content_schemas/SampleFile.json
+    content: src/content_schemas/SampleFile.json
     description: A Sample File is a File that is associated with a Sample.
     id:
       propertyName: alias
@@ -210,7 +210,7 @@ classes:
           target: false
         targetClass: Sample
   SequencingExperiment:
-    content: content_schemas/SequencingExperiment.json
+    content: src/content_schemas/SequencingExperiment.json
     description: A Sequencing Experiment is an investigation that consists of a coordinated
       set of actions and observations designed to generate data with the goal of verifying,
       falsifying, or establishing the validity of a hypothesis.
@@ -234,7 +234,7 @@ classes:
           target: false
         targetClass: SequencingProtocol
   SequencingProcess:
-    content: content_schemas/SequencingProcess.json
+    content: src/content_schemas/SequencingProcess.json
     description: The Sequencing Process captures the technical parameters that were
       used to produce sequencing output from the Sample. It links the Sample to sequencing
       output.
@@ -258,7 +258,7 @@ classes:
           target: false
         targetClass: SequencingExperiment
   SequencingProcessFile:
-    content: content_schemas/SequencingProcessFile.json
+    content: src/content_schemas/SequencingProcessFile.json
     description: A Sequencing Process File is a File that is associated with a Sequencing
       Process.
     id:
@@ -281,20 +281,20 @@ classes:
           target: false
         targetClass: SequencingProcess
   SequencingProtocol:
-    content: content_schemas/SequencingProtocol.json
+    content: src/content_schemas/SequencingProtocol.json
     description: The Sequencing Protocol captures information about parameters and
       metadata associated with a Sequencing Experiment.
     id:
       propertyName: alias
   Study:
-    content: content_schemas/Study.json
+    content: src/content_schemas/Study.json
     description: A Study is an experimental investigation of a particular phenomenon.
       It involves a detailed examination and analysis of a subject to learn more about
       the phenomenon being studied.
     id:
       propertyName: alias
   StudyFile:
-    content: content_schemas/StudyFile.json
+    content: src/content_schemas/StudyFile.json
     description: A Study File is a File that is associated with a Study.
     id:
       propertyName: alias
@@ -316,7 +316,7 @@ classes:
           target: false
         targetClass: Study
   Trio:
-    content: content_schemas/Trio.json
+    content: src/content_schemas/Trio.json
     description: A Trio is a study design in which the genetic information of three
       individuals within a family unit is analyzed. It consists of a child and their
       biological parents.

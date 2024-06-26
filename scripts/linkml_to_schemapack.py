@@ -16,13 +16,11 @@ from schemapack.spec.schemapack import (
 )
 from script_utils.cli import run
 
-HERE = Path(__file__).parent.resolve()
-ROOT = HERE.parent
-SRC_DIR = ROOT / "src"
-SCHEMA_FOLDER = SRC_DIR / "ghga_metadata_schema.schemapack.yaml"
-LINKML_SCHEMA = SRC_DIR / "schema" / "submission.yaml"
+ROOT = Path(__file__).parent.parent.resolve()
+SCHEMA_FOLDER = ROOT / "src"/ "ghga_metadata_schema.schemapack.yaml"
+LINKML_SCHEMA = ROOT / "src" / "schema" / "submission.yaml"
 RELATIONS_CONFIG = ROOT / "relations_config.yaml"
-CLASS_CONTENT_FOLDER = SRC_DIR / "content_schemas"
+CLASS_CONTENT_FOLDER = ROOT / "src" / "content_schemas"
 EXCLUDED_CLASSES = ROOT / "exclude_config.yaml"
 
 SCHEMAPACK_SCHEMA_DESCRIPTION = (
@@ -78,7 +76,7 @@ def construct_schemapack_class(
     linkml_class_schema: dict,
     linkml_overall_schema: dict,
 ) -> ClassDefinition:
-    """Creates ClassDefinition object"""
+    """Creates a ClassDefinition object that describes a schemapack class definition"""
     return ClassDefinition(
         description=linkml_class_schema["description"],
         id=IDSpec(propertyName="alias", description=None),
@@ -94,7 +92,7 @@ def construct_schemapack_class(
 
 
 def get_class_relations(class_name: str, relations_config: dict) -> dict:
-    """Extracts the relations of a given class from the relations config"""
+    """Extracts the relations of a class from the relations config"""
     return relations_config["classes"][class_name].get("relations", {})
 
 
@@ -103,7 +101,7 @@ def _class_definitions(
     relations_config: dict,
     excluded_config: list,
 ) -> dict:
-    """Generates ClassDefinition and maps it to class name from linkml schema"""
+    """Maps a ClassDefinition to its class name from linkml schema"""
     return {
         key: construct_schemapack_class(
             key,
@@ -129,18 +127,17 @@ def construct_schemapack(
     )
 
 
-def get_content_schema_path(class_name: str, content_schema_dir: Path, src_dir: Path = SRC_DIR 
+def get_content_schema_path(class_name: str, content_schema_dir: Path, root_dir: Path = ROOT 
 ) -> Path:
-    """Get the path to a content schema file in the provided directory for a class with
-    the provided name. It is relative to the root directory.
+    """Create a path to a content-schema file of a class, relative to the root directory.
     """
-    return  content_schema_dir.relative_to(SRC_DIR) / f"{class_name}.json"
+    return  content_schema_dir.relative_to(root_dir) / f"{class_name}.json"
 
 
 def set_content_schema_paths(
     schemapack_dict: dict[str, Any], content_schema_dir: Path = CLASS_CONTENT_FOLDER
 ) -> dict[str, Any]:
-    """Sets the content schema paths in the provided schemapack dictionary."""
+    """Sets the content-schema paths in the schemapack dictionary."""
     modified_classes = {
         class_name: {
             **class_,
@@ -157,9 +154,9 @@ def set_content_schema_paths(
 
 
 def dump_schemapack(schemapack: SchemaPack, *, path: Path):
-    """Dumps the contents of a SchemaPack object to a YAML file at the specified path.
+    """Dumps the contents of a SchemaPack object to a YAML file at the path.
     It produces a non-condensed schemapack definition, where the value of the class
-    contents are set to the relative paths of their corresponding json schema file."""
+    -contents are set to the relative paths of their corresponding json schema file."""
 
     parent_dir = path.parent
     if not parent_dir.exists():

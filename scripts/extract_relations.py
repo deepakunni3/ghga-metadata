@@ -8,6 +8,8 @@ import yaml
 from pydantic import BaseModel, Field
 from script_utils.cli import run
 
+HERE = Path(__file__).parent.resolve()
+LINKML_SCHEMA_PATH = HERE.parent / "src" / "schema" / "submission.yaml"
 
 class SchemaClass(BaseModel):
     """Model describing a basic schema class"""
@@ -101,7 +103,7 @@ def save_relations(schema: Schema, filename: str):
 
 def main():
     """The main routine."""
-    schema = load_schema(Path("/workspace/src/schema/submission.yaml"))
+    schema = load_schema(Path(LINKML_SCHEMA_PATH))
     class_ranged_slots = slots_with_class_range(schema)
     for _, schema_class in schema.classes.items():
         schema_class.relations = class_relations(schema_class, class_ranged_slots)
